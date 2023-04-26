@@ -2,13 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@id/homeItem"
-        android:checked="false"
-        android:checkable="false"
-        android:title="Home"/>
+        android:title="Home" />
     <item
         android:id="@id/gameDetailsItem"
-        android:checked="false"
-        android:checkable="false"
         android:enabled="false"
         android:title="Details" />
 

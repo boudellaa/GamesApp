@@ -58,7 +58,7 @@ class GameData {
                     "Epic Games",
                     "Epic Games",
                     "Battle royale, sandbox",
-                    "Fortnite is a popular online multiplayer game that pits players against each other in a last-man-standing battle royale. Players must scavenge for weapons and resources while avoiding being eliminated by other players. The game also features a sandbox mode where players can build structures and explore the map. Fortnite has gained a massive following and has become a cultural phenomenon, with numerous celebrity fans and collaborations.",
+                    "Fortnite is a popular online multiplayer game that pits players against each other in a last-man-standing battle royale. Players must scavenge for weapons and resources while avoiding being eliminated by other players.",
                     mutableListOf()
                 ),
                 Game(
@@ -71,7 +71,7 @@ class GameData {
                     "Nintendo EAD",
                     "Nintendo",
                     "Action-adventure",
-                    "The Legend of Zelda: Ocarina of Time is a classic action-adventure video game developed and published by Nintendo for the Nintendo 64 console in 1998. It is the fifth installment in the Legend of Zelda series and is widely regarded as one of the greatest video games of all time.",
+                    "The Legend of Zelda: Ocarina of Time is a classic action-adventure video game developed and published by Nintendo for the Nintendo 64 console in 1998.",
                     mutableListOf()
                 ),
                 Game(
