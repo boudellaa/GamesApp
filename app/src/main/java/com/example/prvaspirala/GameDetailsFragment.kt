@@ -67,7 +67,7 @@ class GameDetailsFragment : Fragment() {
         genre.text = game.genre
         description.text = game.description
 
-        // Inicijalizacija RecyclerView i ReviewAdapter
+
         reviewList = view.findViewById(R.id.review_list)
         reviewList.layoutManager = GridLayoutManager(activity, 1)
         reviewAdapter = GameReviewAdapter(GameData.Games.getDetails(gameTitle.text as String)!!.userImpressions.sortedByDescending { it.timestamp })
