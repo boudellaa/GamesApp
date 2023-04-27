@@ -1,5 +1,6 @@
 package com.example.prvaspirala
 
+import android.content.pm.ActivityInfo
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.test.core.app.ActivityScenario
@@ -119,6 +120,25 @@ class TestLayout {
             .check(matches(allOf(isDisplayed(), withText(equalToIgnoringCase(gameTitle)))))
 
         scenario.close()
+    }
+
+    @Test
+    fun test4() {
+        // Launch the HomeActivity
+        ActivityScenario.launch(HomeActivity::class.java)
+
+        // Rotate the device to landscape
+        ActivityScenario.launch(HomeActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            }
+
+            // Check if the HomeFragment is displayed
+            onView(withId(R.id.home_fragment_container)).check(matches(isDisplayed()))
+
+            // Check if the GameDetailsFragment is displayed
+            onView(withId(R.id.game_details_fragment_container)).check(matches(isDisplayed()))
+        }
     }
 }
 

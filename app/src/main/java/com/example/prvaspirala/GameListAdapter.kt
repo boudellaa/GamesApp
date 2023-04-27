@@ -27,6 +27,7 @@ class GameListAdapter(private var games: List<Game>, private val onItemClicked: 
         return games.size
     }
 
+
     fun updateGames(games: List<Game>) {
         this.games = games
         notifyDataSetChanged()

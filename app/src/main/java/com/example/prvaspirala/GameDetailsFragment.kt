@@ -1,6 +1,7 @@
 package com.example.prvaspirala
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prvaspirala.GameData.Games.getAll
 import com.example.prvaspirala.GameData.Games.getDetails
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -43,9 +45,17 @@ class GameDetailsFragment : Fragment() {
         publisher = view.findViewById(R.id.publisher_textview)
         genre = view.findViewById(R.id.genre_textview)
         description = view.findViewById(R.id.description_textview)
-        val game1 : Game? = getDetails(arguments!!.getString("game_title", "")!!)
-        if(game1 != null){
-            game = game1
+
+
+        val bundle : Bundle? = arguments
+        if(bundle != null){
+            val game1 : Game? = getDetails(arguments!!.getString("game_title", "")!!)
+            if (game1 != null) {
+                game = game1
+            }
+        }else{
+            val games = getAll()
+            game = games[0]
         }
         gameTitle.text = game.title
         coverImage.setImageResource(platform.context.resources.getIdentifier(game.coverImage, "drawable", platform.context.packageName))
@@ -64,16 +74,19 @@ class GameDetailsFragment : Fragment() {
         reviewList.adapter = reviewAdapter
 
 
-        val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
-        navView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.homeItem -> {
-                    val bundle = Bundle()
-                    bundle.putString("game_title", game.title);
-                    findNavController().navigate(R.id.homeItem, bundle)
-                    true
+        val config : Configuration = resources.configuration
+        if(config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
+            navView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.homeItem -> {
+                        val bundle = Bundle()
+                        bundle.putString("game_title", game.title);
+                        findNavController().navigate(R.id.homeItem, bundle)
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
         return view

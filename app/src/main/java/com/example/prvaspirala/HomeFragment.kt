@@ -1,6 +1,7 @@
 package com.example.prvaspirala
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +24,16 @@ class HomeFragment : Fragment() {
 
 
     private fun showGameDetails(game: Game) {
-        val bundle = Bundle()
-        bundle.putString("game_title", game.title)
+        val bundle = bundleOf("game_title" to game.title)
         isGameOpened = true
-        findNavController().navigate(R.id.gameDetailsItem, bundle)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val gameDetailsFragment = GameDetailsFragment()
+            gameDetailsFragment.arguments = bundle
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.game_details_fragment_container, gameDetailsFragment).commit()
+        } else {
+            findNavController().navigate(R.id.gameDetailsItem, bundle)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -40,26 +47,29 @@ class HomeFragment : Fragment() {
 
         isGameOpened = savedInstanceState != null
 
-        val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
-        navView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.gameDetailsItem -> {
-                    val bundle = bundleOf("game_title" to GameData.getDetails(arguments?.getString("game_title")!!)!!.title)
-                    findNavController().navigate(R.id.gameDetailsItem, bundle)
-                    true
+        val config : Configuration = resources.configuration
+        if(config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+            val navView: BottomNavigationView = activity!!.findViewById(R.id.bottom_nav)
+            navView.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.gameDetailsItem -> {
+                        val bundle =
+                            bundleOf("game_title" to GameData.getDetails(arguments?.getString("game_title")!!)!!.title)
+                        findNavController().navigate(R.id.gameDetailsItem, bundle)
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
+
+            val bottom = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
+            bottom?.menu?.findItem(R.id.gameDetailsItem)?.isEnabled = isGameOpened
+            bottom?.menu?.findItem(R.id.homeItem)?.isChecked = true
         }
-
-        val bottom = activity!!.findViewById<BottomNavigationView>(R.id.bottom_nav)
-        bottom?.menu?.findItem(R.id.gameDetailsItem)?.isEnabled = isGameOpened
-        bottom?.menu?.findItem(R.id.homeItem)?.isChecked = true
-
         return view
     }
 
 
-
-
 }
+
