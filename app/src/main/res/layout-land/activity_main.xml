@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/pozadinska"
     android:backgroundTint="@color/pozadinska"
-    tools:context=".HomeActivity">
+    tools:context="ba.etf.rma23.projekat.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -21,6 +21,8 @@ import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matcher
 import android.view.View
 import android.widget.TextView
+import ba.etf.rma23.projekat.GameListAdapter
+import ba.etf.rma23.projekat.MainActivity
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -50,7 +52,7 @@ class OwnEspressoTests {
     @Test
     fun test1() {
 
-        val activityScenario = ActivityScenario.launch(HomeActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         var navController: NavController? = null
         activityScenario.onActivity { activity ->
@@ -97,7 +99,7 @@ class OwnEspressoTests {
     @Test
     fun test2() {
 
-        val scenario = ActivityScenario.launch(HomeActivity::class.java)
+        val scenario = ActivityScenario.launch(MainActivity::class.java)
 
         onView(withId(R.id.game_list))
             .perform(RecyclerViewActions.actionOnItemAtPosition<GameListAdapter.GameViewHolder>(1, click()))
@@ -146,9 +148,9 @@ class OwnEspressoTests {
     @Test
     fun test3() {
 
-        ActivityScenario.launch(HomeActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
 
-        ActivityScenario.launch(HomeActivity::class.java).use { scenario ->
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
                 activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             }

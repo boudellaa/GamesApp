@@ -1,4 +1,4 @@
-package com.example.prvaspirala
+package ba.etf.rma23.projekat
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+
+
 
 class GameReviewAdapter(private val reviews: List<UserImpression>) : RecyclerView.Adapter<GameReviewAdapter.ReviewViewHolder>() {
 
@@ -35,4 +37,6 @@ class GameReviewAdapter(private val reviews: List<UserImpression>) : RecyclerVie
     }
 
     override fun getItemCount() = reviews.size
+
+
 }

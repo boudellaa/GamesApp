@@ -15,11 +15,30 @@
         tools:layout_editor_absoluteX="132dp"
         tools:layout_editor_absoluteY="-1dp">
 
+        <Button
+            android:id="@+id/button1"
+            android:backgroundTint="@color/slabablue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textStyle="bold"
+            android:text="SAVE" />
+
         <ImageView
             android:id="@+id/logo_image"
-            android:layout_width="match_parent"
+            android:layout_width="215dp"
             android:layout_height="88dp"
+            android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/logo" />
+
+        <Button
+            android:id="@+id/button2"
+            android:backgroundTint="@color/slabablue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textStyle="bold"
+            android:text="REMOVE" />
 
     </LinearLayout>
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/pozadinska"
     android:backgroundTint="@color/pozadinska"
-    tools:context=".HomeActivity">
+    tools:context="ba.etf.rma23.projekat.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

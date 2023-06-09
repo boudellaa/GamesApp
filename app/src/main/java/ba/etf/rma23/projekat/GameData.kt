@@ -1,10 +1,10 @@
-package com.example.prvaspirala
+package ba.etf.rma23.projekat
 
 class GameData {
     companion object Games {
         fun getAll(): List<Game> {
             return listOf(
-                Game(
+                /*Game(
                     "FIFA 23",
                     "PlayStation",
                     "August 22, 2022",
@@ -138,12 +138,12 @@ class GameData {
                     "Action-Adventure",
                     "The game follows Arthur Morgan, a member of a gang of outlaws in the dying days of the Wild West.",
                     mutableListOf()
-                )
+                )*/
             )
         }
 
         fun getDetails(title: String): Game? {
-            return Games.getAll().find { it.title == title }
+            return getAll().find { it.title == title }
         }
     }
 }

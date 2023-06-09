@@ -1,4 +1,4 @@
-package com.example.prvaspirala
+package ba.etf.rma23.projekat
 
 
 import android.content.res.Configuration
@@ -6,15 +6,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prvaspirala.GameData.Games.getAll
-import com.example.prvaspirala.GameData.Games.getDetails
+import ba.etf.rma23.projekat.GameData.Games.getAll
+import ba.etf.rma23.projekat.GameData.Games.getDetails
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
+import com.bumptech.glide.Glide
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class GameDetailsFragment : Fragment() {
@@ -29,9 +39,8 @@ class GameDetailsFragment : Fragment() {
     private lateinit var genre : TextView
     private lateinit var description : TextView
     private lateinit var game : Game
-
-    private lateinit var reviewAdapter: GameReviewAdapter
-    private lateinit var reviewList: RecyclerView
+    private lateinit var saveButton: Button
+    private lateinit var removeButton: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -49,16 +58,15 @@ class GameDetailsFragment : Fragment() {
 
         val bundle : Bundle? = arguments
         if(bundle != null){
-            val game1 : Game? = getDetails(arguments!!.getString("game_title", "")!!)
-            if (game1 != null) {
-                game = game1
+            val gameId : Int? = arguments!!.getInt("id", -1)
+            if (gameId != null && gameId != -1) {
+                runBlocking {
+                    game = GamesRepository.getGameById(gameId).first()
+                }
             }
-        }else{
-            val games = getAll()
-            game = games[0]
         }
+
         gameTitle.text = game.title
-        coverImage.setImageResource(platform.context.resources.getIdentifier(game.coverImage, "drawable", platform.context.packageName))
         platform.text = game.platform
         releaseDate.text = game.releaseDate
         esrbRating.text = game.esrbRating
@@ -67,12 +75,14 @@ class GameDetailsFragment : Fragment() {
         genre.text = game.genre
         description.text = game.description
 
-
-        reviewList = view.findViewById(R.id.review_list)
-        reviewList.layoutManager = GridLayoutManager(activity, 1)
-        reviewAdapter = GameReviewAdapter(GameData.Games.getDetails(gameTitle.text as String)!!.userImpressions.sortedByDescending { it.timestamp })
-        reviewList.adapter = reviewAdapter
-
+        var url: String = game.coverImage
+       url = url.drop(1).dropLast(1)
+        url = "https:"+ url
+        print("GAME COVER: " + url + "\n")
+        /*Glide.with(context!!).load("https:" + game.coverImage).centerCrop().placeholder(R.drawable.logo)
+            .error(id).fallback(id).into(coverImage)*/
+        val cci = requireContext().resources.getIdentifier("logo", "drawable", coverImage.context.packageName)
+        Glide.with(coverImage.context).load(url).error(cci).fallback(cci).into(coverImage)
 
         val config : Configuration = resources.configuration
         if(config.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -89,6 +99,37 @@ class GameDetailsFragment : Fragment() {
                 }
             }
         }
+
+        saveButton = view.findViewById(R.id.button1)
+        removeButton = view.findViewById(R.id.button2)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val savedGames = AccountGamesRepository.getSavedGames()
+            val isGameSaved = savedGames.find { it.id == game.id } != null
+
+            saveButton.isEnabled = !isGameSaved
+            removeButton.isEnabled = isGameSaved
+        }
+
+        saveButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                AccountGamesRepository.saveGame(game)
+                saveButton.isEnabled = false
+                removeButton.isEnabled = true
+            }
+        }
+
+        removeButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val removed = AccountGamesRepository.removeGame(game.id)
+                if (removed) {
+                    saveButton.isEnabled = true
+                    removeButton.isEnabled = false
+                }
+            }
+        }
+
+
         return view
     }
 
