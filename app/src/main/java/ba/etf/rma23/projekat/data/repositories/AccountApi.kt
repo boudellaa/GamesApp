@@ -19,5 +19,8 @@ interface AccountApi {
     @GET("account/{aid}/games")
     suspend fun getSavedGames(@Path("aid") aid: String = getHash()!!) : Response<List<FavoriteGames>>
 
+    @GET("/games")
+    suspend fun getGamesContainingString(@Query("search") query: String): Response<List<Game>>
+
 
 }

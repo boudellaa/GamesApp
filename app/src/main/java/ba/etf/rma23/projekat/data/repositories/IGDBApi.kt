@@ -1,5 +1,6 @@
 package ba.etf.rma23.projekat.data.repositories
 
+import ba.etf.rma23.projekat.FavoriteGames
 import ba.etf.rma23.projekat.Game
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -26,7 +27,7 @@ interface IGDBApi {
     ): Response<List<Game>>
 
     @GET("/games")
-    suspend fun getGamesContainingString(@Query("search") query: String): Response<List<Game>>
+    suspend fun getGamesContainingString(@Query("search") query: String): Response<List<FavoriteGames>>
 
 
 }

@@ -76,17 +76,10 @@ object AccountGamesRepository {
         }
     }
 
-    suspend fun getGamesContainingString(query: String): List<Game> {
-        return try {
-            val response = IGDBApiConfig.retrofit.getGamesContainingString(query)
-            if (response.isSuccessful) {
-                response.body() ?: emptyList()
-            } else {
-                emptyList()
-            }
-        } catch (e: Exception) {
-            emptyList()
-        }
+    fun getGamesContainingString(query: String): List<Game> {
+        val list = favoriteGames
+        list.removeIf{ it.title!= query}
+        return list
     }
 
     suspend fun removeGame(id: Int): Boolean {
